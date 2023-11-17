@@ -54,14 +54,13 @@ public class BaseConverter {
             char currentChar = number.charAt(i);
 
             if (currentChar == '.') {
-                continue; // Skip checking '.' itself
+                continue;
             }
 
             int digit;
             try {
                 digit = Integer.parseInt("" + currentChar, base);
             } catch (NumberFormatException e) {
-                // Handle the exception (invalid character for the given base)
                 return false;
             }
 
