@@ -487,16 +487,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
         String input = txtNumber.getText();
-        if (!isNumeric(input)) {
-            return;
-        }
-
         try {
-
             String result = baseConverter.convertBase(input, fromBase, toBase);
             txtConverted.setText(result);
         } catch (Exception e) {
             showErrorDialog(e.getMessage(), "Error while converting.");
+            throw e;
         }
 
     }//GEN-LAST:event_btnConvertActionPerformed
