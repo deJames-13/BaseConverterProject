@@ -93,6 +93,7 @@ public class BaseConverter {
         return resultBuilder.toString();
     }
 
+    // CONVERTS INPUT TO BASE 10
     private int convertToBase10(String number, int fromBase) {
         int result = 0;
         int power = 0;
@@ -116,6 +117,7 @@ public class BaseConverter {
         return result;
     }
 
+    // CONVERTS BASE 10 TO DESIRED BASE
     private String convertFromBase10(int number, int toBase) {
         StringBuilder result = new StringBuilder();
 
