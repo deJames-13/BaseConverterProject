@@ -106,8 +106,7 @@ public class BaseConverter {
                 if (Character.isDigit(currentChar)) {
                     digit = Character.getNumericValue(currentChar);
                 } else {
-                    // Handle non-digit characters (e.g., 'A' for base 16)
-                    digit = Character.toUpperCase(currentChar) - 'A' + 10;
+                    digit = Character.digit(currentChar, fromBase);
                 }
 
                 result += digit * Math.pow(fromBase, power);
