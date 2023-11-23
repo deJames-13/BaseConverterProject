@@ -1,13 +1,17 @@
 package baseconverterproject;
 
 import java.awt.Dimension;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
 public class MainFrame extends javax.swing.JFrame {
-    
+
     private final static BaseConverter baseConverter = new BaseConverter();
     private final MainContentPanel inputPanel;
     private final SolutionsPanel solutionsPanel;
-    private String currentDirectory = System.getProperty("user.dir");
+    private final String currentDirectory = System.getProperty("user.dir");
+
+    private final ImagePanel btnBgImg_Active = new ImagePanel(currentDirectory + "/img/icons-calculator-inactive.png");
 
     // #########################################################################    
     // COLORS
@@ -31,8 +35,8 @@ public class MainFrame extends javax.swing.JFrame {
         contentPanel.add(inputPanel);
         contentPanel.add(solutionsPanel);
         solutionsPanel.setVisible(false);
-        
-        btnWrapper.setVisible(false);
+
+        btnBgImg_Active.setOpaque(false);
         // #####################################################################
     }
 
@@ -128,11 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         btnSwitchPage.setLayout(new java.awt.BorderLayout());
-        ImagePanel bgImg = new ImagePanel(currentDirectory + "/img/icon_solution.png");
-        btnSwitchPage.add(bgImg);
-
-        bgImg.setOpaque(false);
-
+        btnSwitchPage.add(btnBgImg_Active);
         btnWrapper.add(btnSwitchPage, java.awt.BorderLayout.CENTER);
 
         lblPage.setFont(new java.awt.Font("Lexend", 1, 10)); // NOI18N
@@ -162,19 +162,39 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSwitchPageMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSwitchPageMouseEntered
-        btnSwitchPage.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(58, 176, 158), 1, true));
+        if (inputPanel.isVisible()) {
+            btnBgImg_Active.setBackgroundImage(currentDirectory + "/img/icons-calculator-hover.png");
+        }
     }//GEN-LAST:event_btnSwitchPageMouseEntered
 
     private void btnSwitchPageMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSwitchPageMouseExited
-        btnSwitchPage.setBorder(null);
+        if (inputPanel.isVisible()) {
+            btnBgImg_Active.setBackgroundImage(currentDirectory + "/img/icons-calculator-inactive.png");
+        }
     }//GEN-LAST:event_btnSwitchPageMouseExited
 
     private void btnSwitchPageMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSwitchPageMouseReleased
         btnSwitchPage.setBorder(null);
+        if (inputPanel.isVisible()) {
+            btnBgImg_Active.setBackgroundImage(currentDirectory + "/img/icons-calculator-hover.png");
+        } else {
+            Border eb = BorderFactory.createEmptyBorder(15, 15, 15, 15);
+            btnSwitchPage.setBorder(eb);
+            btnBgImg_Active.setBackgroundImage(currentDirectory + "/img/icons-back.png");
+        }
     }//GEN-LAST:event_btnSwitchPageMouseReleased
 
     private void btnSwitchPageMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSwitchPageMousePressed
-        btnSwitchPage.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(58, 176, 158), 3, true));
+        Border eb = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        btnSwitchPage.setBorder(eb);
+        if (inputPanel.isVisible()) {
+            btnBgImg_Active.setBackgroundImage(currentDirectory + "/img/icons-calculator-active.png");
+        }
+
+        if (inputPanel.txtConverted.getText().isEmpty() || "0".equals(inputPanel.txtConverted.getText())) {
+            return;
+        }
+
         inputPanel.setVisible(!inputPanel.isVisible());
         solutionsPanel.setVisible(!solutionsPanel.isVisible());
         windowTitle.setText(inputPanel.isVisible() ? "Base Converter" : "Solution");
@@ -185,7 +205,6 @@ public class MainFrame extends javax.swing.JFrame {
     // #########################################################################    
     // MAIN FUNCTION / RUNNER FUNC
     // #########################################################################        
-
 
     // #########################################################################    
     // FUNCTIONS

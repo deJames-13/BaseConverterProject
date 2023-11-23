@@ -412,7 +412,7 @@ public class MainContentPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel mainContent;
-    private javax.swing.JTextField txtConverted;
+    public javax.swing.JTextField txtConverted;
     private javax.swing.JTextField txtNumber;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,8 +12,6 @@ public class BaseConverter {
     private int toBase;
     private String input;
 
-    // ##################################################################################################
-    // CONSTRUCTOR
     public BaseConverter() {
     }
 

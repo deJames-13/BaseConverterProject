@@ -217,8 +217,7 @@
                       </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
-                        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="bgImg.setOpaque(false);"/>
-                        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="ImagePanel bgImg = new ImagePanel(currentDirectory + &quot;/img/icon_solution.png&quot;);&#xa;btnSwitchPage.add(bgImg);"/>
+                        <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="btnSwitchPage.add(btnBgImg_Active);"/>
                       </AuxValues>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
