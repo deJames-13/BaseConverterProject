@@ -60,13 +60,16 @@ public class SolutionsPanel extends javax.swing.JPanel {
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setAutoscrolls(true);
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(100, 32767));
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(100, 100));
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(9999, 9999));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(620, 1000));
         jScrollPane1.setOpaque(true);
 
         scrollPanel.setBackground(new java.awt.Color(248, 244, 255));
         scrollPanel.setMaximumSize(new java.awt.Dimension(999999, 99999));
-        scrollPanel.setLayout(new javax.swing.BoxLayout(scrollPanel, javax.swing.BoxLayout.Y_AXIS));
+        scrollPanel.setMinimumSize(new java.awt.Dimension(620, 1000));
+        scrollPanel.setName(""); // NOI18N
+        scrollPanel.setPreferredSize(new java.awt.Dimension(620, 1000));
+        scrollPanel.setLayout(new javax.swing.BoxLayout(scrollPanel, javax.swing.BoxLayout.PAGE_AXIS));
         jScrollPane1.setViewportView(scrollPanel);
 
         contentWrapper.add(jScrollPane1, java.awt.BorderLayout.CENTER);

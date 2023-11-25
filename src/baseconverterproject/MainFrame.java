@@ -94,7 +94,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainWindow.add(topWrapper, java.awt.BorderLayout.PAGE_START);
 
         mainPanel.setBackground(new java.awt.Color(204, 255, 204));
-        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 20));
+        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 20));
         mainPanel.setForeground(new java.awt.Color(248, 244, 255));
         mainPanel.setMinimumSize(new java.awt.Dimension(800, 410));
         mainPanel.setLayout(new java.awt.BorderLayout());

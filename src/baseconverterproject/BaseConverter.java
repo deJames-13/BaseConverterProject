@@ -1,11 +1,12 @@
 package baseconverterproject;
 
+import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BaseConverter {
 
-    private final LinkedHashMap<String, Object> messageMap = new LinkedHashMap<String, Object>();
+    private final LinkedHashMap<String, Object> messageMap = new LinkedHashMap<>();
 
     private String result;
     private int fromBase;
@@ -16,7 +17,6 @@ public class BaseConverter {
     }
 
     public String convertBase(String number, int fromBase, int toBase) {
-
         if (!isValidBase(number, fromBase)) {
             throw new IllegalArgumentException(
                     "Number is not valid for the given base!\nPlease enter values from 0 to " + (fromBase - 1));
@@ -39,7 +39,7 @@ public class BaseConverter {
 
             messageMap.put("title_0", "INTEGER number: " + integerPart + "\t " + "FRACTIONAL part: " + fractionalPart);
 
-            String integerResult = convertBase(integerPart, fromBase, toBase);
+            String integerResult = convertBase(number, fromBase, toBase);
             String fractionalResult = convertFractionalPart(fractionalPart, fromBase, toBase);
             fractionalResult = fractionalResult.contains(".") ? fractionalResult.split("0.")[1] : fractionalResult;
             result = integerResult + "." + fractionalResult;
@@ -50,14 +50,14 @@ public class BaseConverter {
 
             return result;
         }
-        int base10Value;
+
+        BigInteger base10Value;
         if (fromBase != 10) {
             messageMap.put("title_1", "INTEGER NUMBER: " + number + " TO BASE 10.");
-            base10Value = integerToBase10(number, fromBase);
+            base10Value = integerToBase10(new BigInteger(number, fromBase), fromBase);
             messageMap.put("title_2", "CONVERTED TO BASE 10: " + base10Value);
         } else {
-            base10Value = Integer.parseInt(number);
-
+            base10Value = new BigInteger(number);
         }
 
         if (toBase != 10) {
@@ -65,7 +65,7 @@ public class BaseConverter {
             result = integerFromBase10(base10Value, toBase);
             messageMap.put("title_4", "INTEGER CONVERTED FROM BASE 10: " + result);
         } else {
-            result = base10Value + "";
+            result = base10Value.toString();
         }
 
         return result;
@@ -91,14 +91,14 @@ public class BaseConverter {
     }
 
     private String convertFractionalPart(String number, int fromBase, int toBase) {
-        double base10Value;
+        BigInteger base10Value;
 
         if (fromBase != 10) {
             messageMap.put("title_5", "CONVERTING FRACTION: " + number + " TO BASE 10.");
             base10Value = fractionToBase10(number, fromBase);
             messageMap.put("title_6", "FRACTIONAL BASE 10: " + String.format("%.7f", base10Value));
         } else {
-            base10Value = Double.parseDouble(number);
+            base10Value = new BigInteger(number);
         }
 
         if (toBase != 10) {
@@ -107,66 +107,64 @@ public class BaseConverter {
             result = fractionFromBase10(base10Value, toBase);
             messageMap.put("title_8", "FRACTION CONVERTED FROM BASE10: " + result);
         } else {
-            result = base10Value + "";
+            result = base10Value.toString();
         }
 
         return result;
     }
 
-    private double fractionToBase10(String number, int fromBase) {
-        double result = 0;
+    private BigInteger fractionToBase10(String number, int fromBase) {
+        BigInteger result = BigInteger.ZERO;
         int power = -1;
 
-        messageMap.put("theader_1", new String[] { "Character - Digit", "fromBase", "Exponent", "Result" });
+        messageMap.put("theader_1", new String[]{"Character - Digit", "fromBase", "Exponent", "Result"});
 
         for (int i = 0; i < number.length(); i++) {
             char character = number.charAt(i);
             int digit = Character.digit(character, fromBase);
-            double base10digit = digit * Math.pow(fromBase, power);
-            result += base10digit;
+            BigInteger base10Digit = BigInteger.valueOf(digit).multiply(BigInteger.valueOf(fromBase).pow(power));
+            result = result.add(base10Digit);
 
             messageMap.put("trow_1_" + i,
-                    new String[] { character + " - " + digit, fromBase + "", power + "",
-                            String.format("%.7f", base10digit) });
+                    new String[]{character + " - " + digit, fromBase + "", power + "", base10Digit.toString()});
 
             power--;
         }
         return result;
     }
 
-    private String fractionFromBase10(double base10value, int toBase) {
+    private String fractionFromBase10(BigInteger base10value, int toBase) {
         int digitCounts = 5;
         StringBuilder resultBuilder = new StringBuilder();
 
-        messageMap.put("theader_2", new String[] { "Base 10 * toBase", "Fractional Part", "Integer Part", "Result" });
+        messageMap.put("theader_2", new String[]{"Base 10 * toBase", "Fractional Part", "Integer Part", "Result"});
 
         for (int i = 0; i < digitCounts; i++) {
-            double product = base10value * toBase;
+            BigInteger product = base10value.multiply(BigInteger.valueOf(toBase));
             base10value = product;
 
-            int integerPart = (int) base10value;
-            String toStr = Integer.toString(integerPart, toBase).toUpperCase();
+            BigInteger integerPart = base10value.divide(BigInteger.valueOf(toBase));
+            String toStr = integerPart.toString(Character.MAX_RADIX).toUpperCase();
             resultBuilder.append(toStr);
-            base10value -= integerPart;
+            base10value = base10value.subtract(integerPart.multiply(BigInteger.valueOf(toBase)));
 
             messageMap.put("trow_2_" + i,
-                    new String[] { String.format("%.7f", product), String.format("%.7f", base10value) + "",
-                            integerPart + "",
-                            resultBuilder.toString() });
+                    new String[]{product.toString(), base10value.toString(), integerPart.toString(), resultBuilder.toString()});
 
         }
 
         return resultBuilder.toString();
     }
 
-    private int integerToBase10(String number, int fromBase) {
-        int result = 0;
+    private BigInteger integerToBase10(BigInteger number, int fromBase) {
+        BigInteger result = BigInteger.ZERO;
         int power = 0;
 
-        messageMap.put("theader_3", new String[] { "Character - Digit", "fromBase", "Exponent", "Result" });
+        messageMap.put("theader_3", new String[]{"Character - Digit", "fromBase", "Exponent", "Result"});
 
-        for (int i = number.length() - 1; i >= 0; i--) {
-            char currentChar = number.charAt(i);
+        String numberStr = number.toString(Character.MAX_RADIX).toUpperCase();
+        for (int i = numberStr.length() - 1; i >= 0; i--) {
+            char currentChar = numberStr.charAt(i);
 
             if (currentChar == '.') {
                 continue;
@@ -178,31 +176,30 @@ public class BaseConverter {
             } else {
                 digit = Character.digit(currentChar, fromBase);
             }
-            int base10digit = (int) (digit * Math.pow(fromBase, power));
-            result += base10digit;
+            BigInteger base10Digit = BigInteger.valueOf(digit).multiply(BigInteger.valueOf(fromBase).pow(power));
+            result = result.add(base10Digit);
 
             messageMap.put("trow_3_" + i,
-                    new String[] { currentChar + " - " + digit, fromBase + "", power + "", base10digit + "" });
+                    new String[]{currentChar + " - " + digit, fromBase + "", power + "", base10Digit.toString()});
 
             power++;
         }
         return result;
     }
 
-    private String integerFromBase10(int number, int toBase) {
+    private String integerFromBase10(BigInteger number, int toBase) {
         StringBuilder result = new StringBuilder();
 
-        messageMap.put("theader_4", new String[] { "Number", "To Base", "Ramainder", "Result" });
+        messageMap.put("theader_4", new String[]{"Number", "To Base", "Remainder", "Result"});
         int i = 0;
-        while (number > 0) {
-            int remainder = number % toBase;
-            String toStr = Integer.toString(remainder, toBase).toUpperCase();
-            result.insert(0, toStr);
+        while (number.compareTo(BigInteger.ZERO) > 0) {
+            BigInteger[] divisionResult = number.divideAndRemainder(BigInteger.valueOf(toBase));
+            result.insert(0, divisionResult[1].toString(Character.MAX_RADIX).toUpperCase());
 
             messageMap.put("trow_4_" + i,
-                    new String[] { number + "", toBase + "", remainder + "", toStr });
+                    new String[]{number.toString(), toBase + "", divisionResult[1].toString(), result.toString()});
 
-            number /= toBase;
+            number = divisionResult[0];
             i++;
         }
 
